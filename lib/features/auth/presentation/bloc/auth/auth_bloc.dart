@@ -39,37 +39,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ));
       } else if (event is CreateUserEvent) {
         final either = await createUserUsecase.call(event.user);
-        emit(either.fold(
-          (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
-          (_) => AuthSuccessState(),
-        ));
+        emit(_getState(either));
       } else if (event is LoginEvent) {
         final either = await loginUsecase.call(event.phone, event.password);
-        emit(either.fold(
-          (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
-          (_) => AuthSuccessState(),
-        ));
+        emit(_getState(either));
       } else if (event is LogoutEvent) {
         final either = await logoutUsecase.call();
-        emit(either.fold(
-          (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
-          (_) => AuthSuccessState(),
-        ));
+        emit(_getState(either));
       } else if (event is RefreshTokenEvent) {
         final either = await refreshTokenUsecase.call();
-        emit(either.fold(
-          (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
-          (_) => AuthSuccessState(),
-        ));
+        emit(_getState(either));
       }
     });
   }
 }
 
-AuthState _getState(Either<Failure, AppUser> either) {
+AuthState _getState(Either<Failure, Unit> either) {
   return either.fold(
     (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
-    (user) => AuthProfileSuccessState(user: user),
+    (_) => AuthSuccessState(),
   );
 }
 

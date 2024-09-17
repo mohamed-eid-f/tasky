@@ -29,6 +29,8 @@ class _SignupScreenState extends State<SignupScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final bottomPadding = MediaQuery.of(context).viewInsets.bottom;
+    print('bottomPadding: $bottomPadding');
+    print('bottomFactor: ${1 - bottomPadding / height}');
 
     return Material(
       child: Stack(
@@ -54,7 +56,7 @@ class _SignupScreenState extends State<SignupScreen> {
             right: 0,
             left: 0,
             child: Container(
-              height: 600 + bottomPadding,
+              height: bottomPadding > 0 ? 0.6 * height + bottomPadding : 600,
               padding: EdgeInsets.only(
                 right: 16,
                 left: 16,
