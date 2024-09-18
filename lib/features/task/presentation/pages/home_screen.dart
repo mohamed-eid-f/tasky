@@ -8,8 +8,6 @@ import 'package:tasky/features/task/presentation/widgets/custom_home_appbar.dart
 import 'package:tasky/features/task/presentation/widgets/taskitem/task_item.dart';
 
 import '../../../../core/consts/app_colors.dart';
-import '../../../../core/consts/consts.dart';
-import '../../../../core/storage/secure_storage.dart';
 import '../widgets/chips_selector.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,7 +17,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthSuccessState) {
+          if (state is LogoutSuccessState) {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (_) => const LoginScreen()));
           }

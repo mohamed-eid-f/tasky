@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:intl_phone_field/phone_number.dart';
 
 class AppUser extends Equatable {
   final String? id;

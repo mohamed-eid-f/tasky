@@ -9,9 +9,9 @@ sealed class AuthEvent extends Equatable {
 
 class GetUserEvent extends AuthEvent {}
 
-class CreateUserEvent extends AuthEvent {
+class RegisterUserEvent extends AuthEvent {
   final AppUser user;
-  const CreateUserEvent(this.user);
+  const RegisterUserEvent(this.user);
 
   @override
   List<Object> get props => [user];

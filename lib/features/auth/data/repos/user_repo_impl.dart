@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:tasky/core/consts/consts.dart';
 import 'package:tasky/features/auth/data/datasources/user_data_source.dart';
 import 'package:tasky/features/auth/domain/entity/app_user.dart';
 import 'package:tasky/features/auth/domain/repos/user_repo.dart';
@@ -20,7 +19,7 @@ class UserRepoImpl implements UserRepo {
   });
 
   @override
-  Future<Either<Failure, String>> createUser(AppUser user) async {
+  Future<Either<Failure, String>> registerUser(AppUser user) async {
     final userModel = AppUser(
       phone: user.phone,
       password: user.password,
@@ -31,10 +30,14 @@ class UserRepoImpl implements UserRepo {
     );
     if (await internetInfo.isConnected) {
       try {
-        userDataSource.createUser(userModel);
-        return const Right(kSuccess);
+        String result = await userDataSource.registerUser(userModel);
+        return Right(result);
       } on ServerException {
         return Left(ServerFailure());
+      } on UserExistException {
+        return Left(UserExistFailure());
+      } on WrongFieldsException {
+        return Left(WrongFieldsFailure());
       }
     } else {
       return Left(OfflineFailure());
@@ -59,8 +62,10 @@ class UserRepoImpl implements UserRepo {
   Future<Either<Failure, String>> login(String phone, String password) async {
     if (await internetInfo.isConnected) {
       try {
-        await userDataSource.login(phone, password);
-        return const Right(kSuccess);
+        String result = await userDataSource.login(phone, password);
+        return Right(result);
+      } on WrongUserOrPasswordException {
+        return Left(WrongUserOrPasswordFailure());
       } on ServerException {
         return Left(ServerFailure());
       }
@@ -73,8 +78,8 @@ class UserRepoImpl implements UserRepo {
   Future<Either<Failure, String>> logout() async {
     if (await internetInfo.isConnected) {
       try {
-        await userDataSource.logout();
-        return const Right(kSuccess);
+        String result = await userDataSource.logout();
+        return Right(result);
       } on ServerException {
         return Left(ServerFailure());
       }
@@ -87,8 +92,8 @@ class UserRepoImpl implements UserRepo {
   Future<Either<Failure, String>> refreshToken() async {
     if (await internetInfo.isConnected) {
       try {
-        await userDataSource.refreshToken();
-        return const Right(kSuccess);
+        String result = await userDataSource.refreshToken();
+        return Right(result);
       } on ServerException {
         return Left(ServerFailure());
       }

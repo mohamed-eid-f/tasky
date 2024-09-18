@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,17 +18,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final GetAppUserUsecase _getAppUserUsecase;
   final LoginUsecase _loginUsecase;
   final LogoutUsecase _logoutUsecase;
-  final CreateUserUsecase _createUserUsecase;
+  final RegisterUserUsecase _registerUserUsecase;
   final RefreshTokenUsecase _refreshTokenUsecase;
 
   AuthBloc({
     required GetAppUserUsecase getAppUserUsecase,
     required LoginUsecase loginUsecase,
     required LogoutUsecase logoutUsecase,
-    required CreateUserUsecase createUserUsecase,
+    required RegisterUserUsecase registerUserUsecase,
     required RefreshTokenUsecase refreshTokenUsecase,
   })  : _refreshTokenUsecase = refreshTokenUsecase,
-        _createUserUsecase = createUserUsecase,
+        _registerUserUsecase = registerUserUsecase,
         _logoutUsecase = logoutUsecase,
         _loginUsecase = loginUsecase,
         _getAppUserUsecase = getAppUserUsecase,
@@ -45,32 +42,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
           (user) => AuthProfileSuccessState(user: user),
         ));
-      } else if (event is CreateUserEvent) {
+      } else if (event is RegisterUserEvent) {
         emit(AuthLoadingState());
-        final either = await _createUserUsecase.call(event.user);
-        emit(_getState(either));
+        final either = await _registerUserUsecase.call(event.user);
+        emit(either.fold(
+          (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
+          (success) => RegisterSuccessState(success),
+        ));
       } else if (event is LoginEvent) {
         emit(AuthLoadingState());
         final either = await _loginUsecase.call(event.phone, event.password);
-        emit(_getState(either));
+        emit(either.fold(
+          (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
+          (success) => LoginSuccessState(success),
+        ));
+      } else if (event is InitialEvent) {
+        emit(InitialState());
       } else if (event is LogoutEvent) {
         emit(AuthLoadingState());
         final either = await _logoutUsecase.call();
-        emit(_getState(either));
+        emit(either.fold(
+          (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
+          (success) => LogoutSuccessState(success),
+        ));
       } else if (event is RefreshTokenEvent) {
         emit(AuthLoadingState());
         final either = await _refreshTokenUsecase.call();
-        emit(_getState(either));
+        emit(either.fold(
+          (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
+          (success) => RefreshTokenSuccessState(success),
+        ));
       }
     });
   }
-}
-
-AuthState _getState(Either<Failure, String> either) {
-  return either.fold(
-    (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
-    (_) => const AuthSuccessState(kSuccess),
-  );
 }
 
 String getErrorMessage(Failure failure) {
@@ -81,6 +85,12 @@ String getErrorMessage(Failure failure) {
       return kOfflineFailureMessage;
     case NotFoundFailure():
       return kEmptyFailureMessage;
+    case WrongFieldsFailure():
+      return kWrongFieldFailureMessage;
+    case UserExistFailure():
+      return kUserExistFailureMessage;
+    case WrongUserOrPasswordFailure():
+      return kWrongUserOrPasswordFailureMessage;
     default:
       return "Unexpected Error ($failure). Please try again later";
   }

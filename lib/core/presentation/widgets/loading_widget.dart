@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../consts/app_colors.dart';
-
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({super.key});
 

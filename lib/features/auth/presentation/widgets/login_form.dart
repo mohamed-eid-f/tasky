@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/presentation/widgets/app_button.dart';
-import '../../../task/presentation/pages/home_screen.dart';
 import '../bloc/auth/auth_bloc.dart';
 import 'app_large_title.dart';
 import 'app_password_field.dart';
@@ -58,15 +57,6 @@ class _LoginFormState extends State<LoginForm> {
                     context
                         .read<AuthBloc>()
                         .add(LoginEvent(phoneNumber!, password!));
-                    // either.fold((failure) {
-                    //   print("SOME ERROR OCCURRED $failure");
-                    // }, (success) {
-                    //   if (mounted) {
-                    //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //       builder: (_) => const HomeScreen(),
-                    //     ));
-                    //   }
-                    // });
                   } else {
                     print("Validation failed");
                     setState(() {

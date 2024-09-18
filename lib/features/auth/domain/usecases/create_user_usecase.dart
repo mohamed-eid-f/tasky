@@ -3,13 +3,13 @@ import '../../../../core/errors/failure.dart';
 import '../entity/app_user.dart';
 import '../repos/user_repo.dart';
 
-class CreateUserUsecase {
+class RegisterUserUsecase {
   final UserRepo repository;
-  CreateUserUsecase({
+  RegisterUserUsecase({
     required this.repository,
   });
 
   Future<Either<Failure, String>> call(AppUser user) async {
-    return await repository.createUser(user);
+    return await repository.registerUser(user);
   }
 }

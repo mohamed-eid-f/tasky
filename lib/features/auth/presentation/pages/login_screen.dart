@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
             left: 0,
             child: BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
-                if (state is AuthSuccessState) {
+                if (state is LoginSuccessState) {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (_) => const HomeScreen(),
                   ));
@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     LoginForm(),
                     SizedBox(height: 8.0),
                     RichTextLoginScreen(),
+                    SizedBox(height: 8.0),
                   ],
                 );
               },

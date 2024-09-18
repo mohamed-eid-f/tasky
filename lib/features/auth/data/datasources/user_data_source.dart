@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:tasky/core/storage/secure_storage.dart';
 
@@ -11,7 +10,7 @@ import '../models/user_model.dart';
 
 abstract class UserDataSource {
   Future<AppUser> getProfile();
-  Future<String> createUser(AppUser user);
+  Future<String> registerUser(AppUser user);
   Future<String> login(String phone, String password);
   Future<String> refreshToken();
   Future<String> logout();
@@ -23,17 +22,17 @@ class UserDataSourceWithHttp implements UserDataSource {
   UserDataSourceWithHttp({required this.client});
 
   @override
-  Future<String> createUser(AppUser user) async {
+  Future<String> registerUser(AppUser user) async {
     final Map<String, dynamic> body = {
       'phone': user.phone,
       'password': user.password,
       'displayName': user.displayName,
-      'experienceYears': user.experienceYears,
+      'experienceYears': user.experienceYears.toString(),
       'address': user.address,
       'level': user.level,
     };
     final response = await client.post(
-      Uri.parse("$kBaseUrl/auth/register/"),
+      Uri.parse("$kBaseUrl/auth/register"),
       body: body,
     );
     if (response.statusCode == 201) {
@@ -48,7 +47,7 @@ class UserDataSourceWithHttp implements UserDataSource {
           key: kRefreshToken, value: jsonResponse["refresh_token"]);
       return Future.value(kSuccess);
     } else if (response.statusCode == 422) {
-      print("UserExistException");
+      print("UserExistException: ${response.body}");
 
       throw UserExistException();
     } else if (response.statusCode == 500) {

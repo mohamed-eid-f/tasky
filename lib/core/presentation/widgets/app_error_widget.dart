@@ -13,8 +13,10 @@ class AppErrorWidget extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(32),
         padding: const EdgeInsets.all(32),
-        color: Colors.redAccent,
-        // height: MediaQuery.of(context).size.height / 3,
+        decoration: const BoxDecoration(
+          color: Colors.redAccent,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
         width: 300,
         child: Column(
           children: [
@@ -30,6 +32,7 @@ class AppErrorWidget extends StatelessWidget {
             AppButton(
                 title: "Try Again",
                 onPressed: () {
+                  print("initial event");
                   context.read<AuthBloc>().add(InitialEvent());
                 }),
           ],

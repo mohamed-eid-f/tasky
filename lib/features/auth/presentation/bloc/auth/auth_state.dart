@@ -11,10 +11,37 @@ final class InitialState extends AuthState {}
 
 final class AuthLoadingState extends AuthState {}
 
-final class AuthSuccessState extends AuthState {
+final class LoginSuccessState extends AuthState {
   final String successMessage;
 
-  const AuthSuccessState(this.successMessage);
+  const LoginSuccessState(this.successMessage);
+
+  @override
+  List<Object> get props => [successMessage];
+}
+
+final class LogoutSuccessState extends AuthState {
+  final String successMessage;
+
+  const LogoutSuccessState(this.successMessage);
+
+  @override
+  List<Object> get props => [successMessage];
+}
+
+final class RefreshTokenSuccessState extends AuthState {
+  final String successMessage;
+
+  const RefreshTokenSuccessState(this.successMessage);
+
+  @override
+  List<Object> get props => [successMessage];
+}
+
+final class RegisterSuccessState extends AuthState {
+  final String successMessage;
+
+  const RegisterSuccessState(this.successMessage);
 
   @override
   List<Object> get props => [successMessage];

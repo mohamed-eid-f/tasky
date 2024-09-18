@@ -20,7 +20,7 @@ Future<void> init() async {
 
   // Bloc
   sl.registerFactory(() => AuthBloc(
-        createUserUsecase: sl(),
+        registerUserUsecase: sl(),
         getAppUserUsecase: sl(),
         loginUsecase: sl(),
         logoutUsecase: sl(),
@@ -28,7 +28,7 @@ Future<void> init() async {
       ));
 
   // Usecases
-  sl.registerLazySingleton(() => CreateUserUsecase(repository: sl()));
+  sl.registerLazySingleton(() => RegisterUserUsecase(repository: sl()));
   sl.registerLazySingleton(() => GetAppUserUsecase(repository: sl()));
   sl.registerLazySingleton(() => LoginUsecase(repository: sl()));
   sl.registerLazySingleton(() => LogoutUsecase(repository: sl()));
