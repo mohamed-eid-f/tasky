@@ -7,15 +7,18 @@ class AppButton extends StatelessWidget {
     required this.title,
     this.onPressed,
     this.iconPath,
+    this.isLoading = false,
   });
 
   final String title;
   final Function()? onPressed;
   final String? iconPath;
+  final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: isLoading ? null : onPressed,
       child: Container(
         height: 56,
         width: double.infinity,
@@ -23,19 +26,28 @@ class AppButton extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(kBorderRadius)),
         child: Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                      color: Colors.white,
+          child: isLoading
+              ? const SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      title,
+                      style:
+                          Theme.of(context).textTheme.displayMedium!.copyWith(
+                                color: Colors.white,
+                              ),
                     ),
-              ),
-              if (iconPath != null) const SizedBox(width: 16),
-              if (iconPath != null) Image.asset(iconPath!),
-            ],
-          ),
+                    if (iconPath != null) const SizedBox(width: 16),
+                    if (iconPath != null) Image.asset(iconPath!),
+                  ],
+                ),
         ),
       ),
     );

@@ -11,10 +11,10 @@ import '../models/user_model.dart';
 
 abstract class UserDataSource {
   Future<AppUser> getProfile();
-  Future<Unit> createUser(AppUser user);
-  Future<Unit> login(String phone, String password);
-  Future<Unit> refreshToken();
-  Future<Unit> logout();
+  Future<String> createUser(AppUser user);
+  Future<String> login(String phone, String password);
+  Future<String> refreshToken();
+  Future<String> logout();
 }
 
 class UserDataSourceWithHttp implements UserDataSource {
@@ -23,7 +23,7 @@ class UserDataSourceWithHttp implements UserDataSource {
   UserDataSourceWithHttp({required this.client});
 
   @override
-  Future<Unit> createUser(AppUser user) async {
+  Future<String> createUser(AppUser user) async {
     final Map<String, dynamic> body = {
       'phone': user.phone,
       'password': user.password,
@@ -46,12 +46,17 @@ class UserDataSourceWithHttp implements UserDataSource {
           key: kAccessToken, value: jsonResponse["access_token"]);
       await storage.writeValue(
           key: kRefreshToken, value: jsonResponse["refresh_token"]);
-      return Future.value(unit);
+      return Future.value(kSuccess);
     } else if (response.statusCode == 422) {
+      print("UserExistException");
+
       throw UserExistException();
     } else if (response.statusCode == 500) {
+      print("WrongFieldsException");
+
       throw WrongFieldsException();
     } else {
+      print("ServerException");
       throw ServerException();
     }
   }
@@ -78,25 +83,27 @@ class UserDataSourceWithHttp implements UserDataSource {
   }
 
   @override
-  Future<Unit> login(String phone, String password) async {
+  Future<String> login(String phone, String password) async {
     final Map<String, dynamic> body = {
       'phone': phone,
       'password': password,
     };
     final response = await client.post(
-      Uri.parse("$kBaseUrl/auth/register/"),
+      Uri.parse("$kBaseUrl/auth/login/"),
       body: body,
     );
-
+    // print("response: ${response.statusCode}");
     if (response.statusCode == 201) {
       SecureStorage storage = const SecureStorage();
+      await storage.deleteAllValues();
+
       var jsonResponse = jsonDecode(response.body);
       await storage.writeValue(key: kId, value: jsonResponse["_id"]);
       await storage.writeValue(
           key: kAccessToken, value: jsonResponse["access_token"]);
       await storage.writeValue(
           key: kRefreshToken, value: jsonResponse["refresh_token"]);
-      return Future.value(unit);
+      return Future.value(kSuccess);
     } else if (response.statusCode == 401) {
       throw WrongUserOrPasswordException();
     } else {
@@ -105,10 +112,10 @@ class UserDataSourceWithHttp implements UserDataSource {
   }
 
   @override
-  Future<Unit> logout() async {
+  Future<String> logout() async {
     final token = await const SecureStorage().readValue(key: kAccessToken);
-
     final Map<String, String> headers = {"Authorization": "Bearer $token"};
+    print('token: $headers');
 
     final response = await client.post(
       Uri.parse("$kBaseUrl/auth/logout/"),
@@ -117,7 +124,9 @@ class UserDataSourceWithHttp implements UserDataSource {
 
     if (response.statusCode == 200) {
       await const SecureStorage().deleteAllValues();
-      return Future.value(unit);
+      print("LOGGED OUT SUCCESSFULLY");
+
+      return Future.value(kSuccess);
     } else if (response.statusCode == 401) {
       throw NotFoundException();
     } else {
@@ -126,7 +135,7 @@ class UserDataSourceWithHttp implements UserDataSource {
   }
 
   @override
-  Future<Unit> refreshToken() async {
+  Future<String> refreshToken() async {
     SecureStorage storage = const SecureStorage();
     String refreshToken = (await storage.readValue(key: kRefreshToken)) ?? "";
     final response = await client.get(
@@ -137,7 +146,7 @@ class UserDataSourceWithHttp implements UserDataSource {
       var jsonResponse = jsonDecode(response.body);
       await storage.writeValue(
           key: kAccessToken, value: jsonResponse["access_token"]);
-      return Future.value(unit);
+      return Future.value(kSuccess);
     } else if (response.statusCode == 403) {
       throw NotFoundException();
     } else {

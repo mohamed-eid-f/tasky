@@ -10,7 +10,7 @@ class LoginUsecase {
     required this.repository,
   });
 
-  Future<Either<Failure, Unit>> call(String phone, String password) async {
+  Future<Either<Failure, String>> call(String phone, String password) async {
     return await repository.login(phone, password);
   }
 }

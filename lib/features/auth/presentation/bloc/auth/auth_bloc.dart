@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,48 +18,58 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  GetAppUserUsecase getAppUserUsecase;
-  LoginUsecase loginUsecase;
-  LogoutUsecase logoutUsecase;
-  CreateUserUsecase createUserUsecase;
-  RefreshTokenUsecase refreshTokenUsecase;
+  final GetAppUserUsecase _getAppUserUsecase;
+  final LoginUsecase _loginUsecase;
+  final LogoutUsecase _logoutUsecase;
+  final CreateUserUsecase _createUserUsecase;
+  final RefreshTokenUsecase _refreshTokenUsecase;
 
   AuthBloc({
-    required this.getAppUserUsecase,
-    required this.loginUsecase,
-    required this.logoutUsecase,
-    required this.createUserUsecase,
-    required this.refreshTokenUsecase,
-  }) : super(AuthLoadingState()) {
+    required GetAppUserUsecase getAppUserUsecase,
+    required LoginUsecase loginUsecase,
+    required LogoutUsecase logoutUsecase,
+    required CreateUserUsecase createUserUsecase,
+    required RefreshTokenUsecase refreshTokenUsecase,
+  })  : _refreshTokenUsecase = refreshTokenUsecase,
+        _createUserUsecase = createUserUsecase,
+        _logoutUsecase = logoutUsecase,
+        _loginUsecase = loginUsecase,
+        _getAppUserUsecase = getAppUserUsecase,
+        super(InitialState()) {
     on<AuthEvent>((event, emit) async {
-      emit(AuthLoadingState());
       if (event is GetUserEvent) {
-        final either = await getAppUserUsecase.call();
+        emit(AuthLoadingState());
+
+        final either = await _getAppUserUsecase.call();
         emit(either.fold(
           (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
           (user) => AuthProfileSuccessState(user: user),
         ));
       } else if (event is CreateUserEvent) {
-        final either = await createUserUsecase.call(event.user);
+        emit(AuthLoadingState());
+        final either = await _createUserUsecase.call(event.user);
         emit(_getState(either));
       } else if (event is LoginEvent) {
-        final either = await loginUsecase.call(event.phone, event.password);
+        emit(AuthLoadingState());
+        final either = await _loginUsecase.call(event.phone, event.password);
         emit(_getState(either));
       } else if (event is LogoutEvent) {
-        final either = await logoutUsecase.call();
+        emit(AuthLoadingState());
+        final either = await _logoutUsecase.call();
         emit(_getState(either));
       } else if (event is RefreshTokenEvent) {
-        final either = await refreshTokenUsecase.call();
+        emit(AuthLoadingState());
+        final either = await _refreshTokenUsecase.call();
         emit(_getState(either));
       }
     });
   }
 }
 
-AuthState _getState(Either<Failure, Unit> either) {
+AuthState _getState(Either<Failure, String> either) {
   return either.fold(
     (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
-    (_) => AuthSuccessState(),
+    (_) => const AuthSuccessState(kSuccess),
   );
 }
 
@@ -70,6 +82,6 @@ String getErrorMessage(Failure failure) {
     case NotFoundFailure():
       return kEmptyFailureMessage;
     default:
-      return "Unexpected Error. Please try again later";
+      return "Unexpected Error ($failure). Please try again later";
   }
 }

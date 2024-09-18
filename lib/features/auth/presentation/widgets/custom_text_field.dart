@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
   final String label;
-  final TextEditingController? controller;
   final TextInputType textInputType;
+  final void Function(String?)? onSaved;
 
   const CustomTextField({
     super.key,
     required this.label,
-    this.controller,
     this.textInputType = TextInputType.text,
+    this.onSaved,
   });
 
   @override
@@ -20,9 +20,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
+      validator: (value) {
+        if (value?.isEmpty ?? true) {
+          return "Field is required";
+        }
+        return null;
+      },
+      onSaved: widget.onSaved,
       keyboardType: widget.textInputType,
-      style: Theme.of(context).textTheme.displayLarge,
+      style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
         labelText: widget.label,
       ),

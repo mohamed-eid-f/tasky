@@ -5,12 +5,12 @@ import '../../../../core/consts/consts.dart';
 
 class AppPasswordField extends StatefulWidget {
   final String label;
-  final TextEditingController controller;
+  final void Function(String?)? onSaved;
 
   const AppPasswordField({
     super.key,
     required this.label,
-    required this.controller,
+    this.onSaved,
   });
 
   @override
@@ -21,17 +21,17 @@ class _AppPasswordFieldState extends State<AppPasswordField> {
   bool visible = false;
 
   @override
-  void dispose() {
-    widget.controller.dispose;
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
+      validator: (value) {
+        if (value?.isEmpty ?? true) {
+          return "Field is required";
+        }
+        return null;
+      },
+      onSaved: widget.onSaved,
       obscureText: !visible,
-      style: Theme.of(context).textTheme.displayLarge,
+      style: Theme.of(context).textTheme.bodyLarge,
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,

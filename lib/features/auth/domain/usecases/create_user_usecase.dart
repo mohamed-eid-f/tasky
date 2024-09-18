@@ -9,7 +9,7 @@ class CreateUserUsecase {
     required this.repository,
   });
 
-  Future<Either<Failure, Unit>> call(AppUser user) async {
+  Future<Either<Failure, String>> call(AppUser user) async {
     return await repository.createUser(user);
   }
 }

@@ -17,6 +17,8 @@ class CreateUserEvent extends AuthEvent {
   List<Object> get props => [user];
 }
 
+class InitialEvent extends AuthEvent {}
+
 class LoginEvent extends AuthEvent {
   final String phone;
   final String password;

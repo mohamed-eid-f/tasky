@@ -7,13 +7,21 @@ sealed class AuthState extends Equatable {
   List<Object> get props => [];
 }
 
+final class InitialState extends AuthState {}
+
 final class AuthLoadingState extends AuthState {}
 
-final class AuthSuccessState extends AuthState {}
+final class AuthSuccessState extends AuthState {
+  final String successMessage;
+
+  const AuthSuccessState(this.successMessage);
+
+  @override
+  List<Object> get props => [successMessage];
+}
 
 final class AuthProfileSuccessState extends AuthState {
   final AppUser user;
-
   const AuthProfileSuccessState({required this.user});
   @override
   List<Object> get props => [user];

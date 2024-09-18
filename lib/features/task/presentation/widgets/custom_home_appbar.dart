@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/auth/presentation/widgets/app_large_title.dart';
 import 'package:tasky/features/task/presentation/pages/profile_screen.dart';
+
+import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
+import '../../../auth/presentation/pages/login_screen.dart';
 
 class CustomHomeAppbar extends StatelessWidget {
   const CustomHomeAppbar({
@@ -25,7 +29,12 @@ class CustomHomeAppbar extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              context.read<AuthBloc>().add(LogoutEvent());
+
+              // _logoutUsecase();
+              print("USER LOGGED OUT SUCCESSFULLY");
+            },
             icon: const Icon(
               Icons.logout,
             ),

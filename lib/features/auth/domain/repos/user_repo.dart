@@ -4,8 +4,8 @@ import '../entity/app_user.dart';
 
 abstract class UserRepo {
   Future<Either<Failure, AppUser>> getProfile();
-  Future<Either<Failure, Unit>> createUser(AppUser user);
-  Future<Either<Failure, Unit>> login(String phone, String password);
-  Future<Either<Failure, Unit>> refreshToken();
-  Future<Either<Failure, Unit>> logout();
+  Future<Either<Failure, String>> createUser(AppUser user);
+  Future<Either<Failure, String>> login(String phone, String password);
+  Future<Either<Failure, String>> refreshToken();
+  Future<Either<Failure, String>> logout();
 }

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class AppDropdownTextField extends StatefulWidget {
   final String label;
-  final TextEditingController controller;
   final TextInputType textInputType;
+  final void Function(String?)? onSelected;
 
   const AppDropdownTextField({
     super.key,
     required this.label,
-    required this.controller,
     this.textInputType = TextInputType.text,
+    this.onSelected,
   });
 
   @override
@@ -18,15 +18,9 @@ class AppDropdownTextField extends StatefulWidget {
 
 class _AppDropdownTextFieldState extends State<AppDropdownTextField> {
   @override
-  void dispose() {
-    widget.controller.dispose;
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DropdownMenu(
-      controller: widget.controller,
+      onSelected: widget.onSelected,
       label: Text(widget.label),
       width: double.infinity,
       textStyle: Theme.of(context).textTheme.bodyLarge,

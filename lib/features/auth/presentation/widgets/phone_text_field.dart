@@ -5,19 +5,29 @@ import 'package:intl_phone_field/phone_number.dart';
 import 'package:tasky/core/consts/consts.dart';
 
 class PhoneTextField extends StatelessWidget {
+  final FocusNode? focusNode;
+  final Function(PhoneNumber)? onChanged;
+  final Function(Country)? onCountryChanged;
+  final void Function(PhoneNumber?)? onSaved;
+
   const PhoneTextField({
     super.key,
     this.focusNode,
     this.onChanged,
     this.onCountryChanged,
+    this.onSaved,
   });
 
-  final FocusNode? focusNode;
-  final Function(PhoneNumber)? onChanged;
-  final Function(Country)? onCountryChanged;
   @override
   Widget build(BuildContext context) {
     return IntlPhoneField(
+      validator: (value) {
+        if (value == null) {
+          return 'Please enter a valid phone number';
+        }
+        return null;
+      },
+      onSaved: onSaved,
       focusNode: focusNode,
       decoration: InputDecoration(
         filled: true,
@@ -28,7 +38,7 @@ class PhoneTextField extends StatelessWidget {
         ),
       ),
       languageCode: "en",
-      style: Theme.of(context).textTheme.displayLarge,
+      style: Theme.of(context).textTheme.bodyLarge,
       onChanged: onChanged,
       onCountryChanged: onCountryChanged,
     );
