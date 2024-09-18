@@ -118,11 +118,11 @@ class UserDataSourceWithHttp implements UserDataSource {
     print('token: $headers');
 
     final response = await client.post(
-      Uri.parse("$kBaseUrl/auth/logout/"),
+      Uri.parse("$kBaseUrl/auth/logout"),
       headers: headers,
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       await const SecureStorage().deleteAllValues();
       print("LOGGED OUT SUCCESSFULLY");
 
