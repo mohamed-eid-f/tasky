@@ -7,7 +7,7 @@ sealed class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetUserEvent extends AuthEvent {}
+class GetProfileEvent extends AuthEvent {}
 
 class RegisterUserEvent extends AuthEvent {
   final AppUser user;

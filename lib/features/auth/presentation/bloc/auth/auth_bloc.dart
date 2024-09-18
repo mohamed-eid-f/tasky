@@ -15,14 +15,14 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final GetAppUserUsecase _getAppUserUsecase;
+  final GetProfileUsecase _getProfileUsecase;
   final LoginUsecase _loginUsecase;
   final LogoutUsecase _logoutUsecase;
   final RegisterUserUsecase _registerUserUsecase;
   final RefreshTokenUsecase _refreshTokenUsecase;
 
   AuthBloc({
-    required GetAppUserUsecase getAppUserUsecase,
+    required GetProfileUsecase getAppUserUsecase,
     required LoginUsecase loginUsecase,
     required LogoutUsecase logoutUsecase,
     required RegisterUserUsecase registerUserUsecase,
@@ -31,16 +31,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _registerUserUsecase = registerUserUsecase,
         _logoutUsecase = logoutUsecase,
         _loginUsecase = loginUsecase,
-        _getAppUserUsecase = getAppUserUsecase,
+        _getProfileUsecase = getAppUserUsecase,
         super(InitialState()) {
     on<AuthEvent>((event, emit) async {
-      if (event is GetUserEvent) {
+      if (event is GetProfileEvent) {
         emit(AuthLoadingState());
 
-        final either = await _getAppUserUsecase.call();
+        final either = await _getProfileUsecase.call();
         emit(either.fold(
           (failure) => AuthErrorState(errorMessage: getErrorMessage(failure)),
-          (user) => AuthProfileSuccessState(user: user),
+          (user) => GetProfileSuccessState(user: user),
         ));
       } else if (event is RegisterUserEvent) {
         emit(AuthLoadingState());

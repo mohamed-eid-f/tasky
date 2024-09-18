@@ -5,8 +5,8 @@ import 'package:tasky/features/auth/presentation/bloc/auth/auth_bloc.dart';
 
 class AppErrorWidget extends StatelessWidget {
   final String message;
-  const AppErrorWidget(this.message, {super.key});
-
+  const AppErrorWidget(this.message, {super.key, this.onPressed});
+  final Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -31,10 +31,10 @@ class AppErrorWidget extends StatelessWidget {
             const SizedBox(height: 16),
             AppButton(
                 title: "Try Again",
-                onPressed: () {
-                  print("initial event");
-                  context.read<AuthBloc>().add(InitialEvent());
-                }),
+                onPressed: onPressed ??
+                    () {
+                      context.read<AuthBloc>().add(InitialEvent());
+                    }),
           ],
         ),
       ),

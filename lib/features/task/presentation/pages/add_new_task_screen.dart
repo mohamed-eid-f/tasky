@@ -4,7 +4,7 @@ import 'package:tasky/core/presentation/widgets/app_button.dart';
 import '../../../auth/presentation/widgets/app_small_title.dart';
 import '../../../auth/presentation/widgets/custom_text_field_hint.dart';
 import '../widgets/add_img_button.dart';
-import '../widgets/custom_add_new_appbar.dart';
+import '../../../../core/presentation/widgets/custom_add_new_appbar.dart';
 import '../widgets/custom_date_selector.dart';
 import '../widgets/custom_priority_selector.dart';
 

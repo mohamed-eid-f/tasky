@@ -47,9 +47,9 @@ final class RegisterSuccessState extends AuthState {
   List<Object> get props => [successMessage];
 }
 
-final class AuthProfileSuccessState extends AuthState {
+final class GetProfileSuccessState extends AuthState {
   final AppUser user;
-  const AuthProfileSuccessState({required this.user});
+  const GetProfileSuccessState({required this.user});
   @override
   List<Object> get props => [user];
 }

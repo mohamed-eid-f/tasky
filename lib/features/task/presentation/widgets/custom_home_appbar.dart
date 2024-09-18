@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/auth/presentation/widgets/app_large_title.dart';
-import 'package:tasky/features/task/presentation/pages/profile_screen.dart';
+import 'package:tasky/features/auth/presentation/pages/profile_screen.dart';
 
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 

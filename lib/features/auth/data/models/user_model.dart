@@ -13,7 +13,7 @@ class UserModel extends AppUser {
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json['id'],
-        phone: json['phone'],
+        phone: json['username'],
         password: json['password'],
         displayName: json['displayName'],
         experienceYears: json['experienceYears'],
@@ -23,7 +23,7 @@ class UserModel extends AppUser {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'phone': phone,
+        'username': phone,
         'password': password,
         'displayName': displayName,
         'experienceYears': experienceYears,

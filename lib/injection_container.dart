@@ -29,7 +29,7 @@ Future<void> init() async {
 
   // Usecases
   sl.registerLazySingleton(() => RegisterUserUsecase(repository: sl()));
-  sl.registerLazySingleton(() => GetAppUserUsecase(repository: sl()));
+  sl.registerLazySingleton(() => GetProfileUsecase(repository: sl()));
   sl.registerLazySingleton(() => LoginUsecase(repository: sl()));
   sl.registerLazySingleton(() => LogoutUsecase(repository: sl()));
   sl.registerLazySingleton(() => RefreshTokenUsecase(repository: sl()));

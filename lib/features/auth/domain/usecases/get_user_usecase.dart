@@ -4,9 +4,9 @@ import '../../../../core/errors/failure.dart';
 import '../entity/app_user.dart';
 import '../repos/user_repo.dart';
 
-class GetAppUserUsecase {
+class GetProfileUsecase {
   final UserRepo repository;
-  GetAppUserUsecase({
+  GetProfileUsecase({
     required this.repository,
   });
 

@@ -35,6 +35,8 @@ class UserDataSourceWithHttp implements UserDataSource {
       Uri.parse("$kBaseUrl/auth/register"),
       body: body,
     );
+    print(response.body);
+
     if (response.statusCode == 201) {
       SecureStorage storage = const SecureStorage();
       var jsonResponse = jsonDecode(response.body);
@@ -47,15 +49,10 @@ class UserDataSourceWithHttp implements UserDataSource {
           key: kRefreshToken, value: jsonResponse["refresh_token"]);
       return Future.value(kSuccess);
     } else if (response.statusCode == 422) {
-      print("UserExistException: ${response.body}");
-
       throw UserExistException();
     } else if (response.statusCode == 500) {
-      print("WrongFieldsException");
-
       throw WrongFieldsException();
     } else {
-      print("ServerException");
       throw ServerException();
     }
   }
@@ -65,9 +62,8 @@ class UserDataSourceWithHttp implements UserDataSource {
     final token = await const SecureStorage().readValue(key: kAccessToken);
 
     final Map<String, String> headers = {"Authorization": "Bearer $token"};
-
-    final response = await client.post(
-      Uri.parse("$kBaseUrl/auth/profile/"),
+    final response = await client.get(
+      Uri.parse("$kBaseUrl/auth/profile"),
       headers: headers,
     );
 
