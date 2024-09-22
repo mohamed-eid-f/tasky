@@ -32,9 +32,7 @@ class AllTodosBloc extends Bloc<AllTodosEvent, GetAllTodosState> {
                   ));
           } else {
             int page = (state.todos.length ~/ 20) + 1;
-            print("page : $page");
             final todos = await getAllTodosUsecase(page);
-            print("length : ${todos.length}");
             todos.length < 20
                 ? emit(state.copyWith(
                     status: GetAllTodoStatus.success,

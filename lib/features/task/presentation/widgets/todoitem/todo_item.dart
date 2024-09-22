@@ -17,12 +17,12 @@ class TodoItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (_) => TaskDetailsScreen(todoId: todo.id!),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => TaskDetailsScreen(todoId: todo.id!),
+          ),
+        );
       },
       child: Container(
         height: 120.0,

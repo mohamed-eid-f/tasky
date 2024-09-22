@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tasky/core/presentation/widgets/loading_widget.dart';
 import 'package:tasky/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tasky/features/auth/presentation/pages/login_screen.dart';
 import 'package:tasky/features/auth/presentation/widgets/app_small_title.dart';
-import 'package:tasky/features/task/presentation/pages/add_new_task_screen.dart';
 import 'package:tasky/features/task/presentation/widgets/custom_home_appbar.dart';
 import 'package:tasky/features/task/presentation/widgets/floating_buttons.dart';
 import 'package:tasky/features/task/presentation/widgets/todoitem/todo_item.dart';
 
-import '../../../../core/consts/app_colors.dart';
 import '../../../../core/utils/show_dialog.dart';
 import '../bloc/all_todos/all_todos_bloc.dart';
 import '../widgets/chips_selector.dart';

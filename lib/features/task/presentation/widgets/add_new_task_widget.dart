@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/core/presentation/widgets/app_button.dart';
-import 'package:tasky/core/storage/secure_storage.dart';
 import 'package:tasky/features/auth/presentation/widgets/app_small_title.dart';
 import 'package:tasky/features/auth/presentation/widgets/custom_text_field_hint.dart';
 import 'package:tasky/features/task/data/models/todo_model.dart';
-import 'package:tasky/features/task/domain/enum/todo_status_enum.dart';
 import 'package:tasky/features/task/presentation/pages/add_new_task_screen.dart';
 import 'package:tasky/features/task/presentation/widgets/add_img_button.dart';
 import 'package:tasky/features/task/presentation/widgets/custom_date_selector.dart';
 import 'package:tasky/features/task/presentation/widgets/custom_priority_selector.dart';
 
-import '../../../../core/consts/consts.dart';
-import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../bloc/todos/todos_bloc.dart';
 
 class AddNewTaskWidget extends StatelessWidget {

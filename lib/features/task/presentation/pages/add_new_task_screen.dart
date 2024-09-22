@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tasky/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:tasky/features/task/presentation/bloc/todos/todos_bloc.dart';
 import 'package:tasky/features/task/presentation/widgets/add_new_task_widget.dart';
 
@@ -68,7 +65,6 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                         ShowDialog(context).showErrorDialog(
                           message: state.message,
                           onPressed: () {
-                            // context.read<AuthBloc>().add(RefreshTokenEvent());
                             Navigator.pop(context);
                           },
                         );
