@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:tasky/core/storage/secure_storage.dart';
 
@@ -35,7 +36,6 @@ class UserDataSourceWithHttp implements UserDataSource {
       Uri.parse("$kBaseUrl/auth/register"),
       body: body,
     );
-    print(response.body);
 
     if (response.statusCode == 201) {
       SecureStorage storage = const SecureStorage();
@@ -110,7 +110,7 @@ class UserDataSourceWithHttp implements UserDataSource {
   Future<String> logout() async {
     final token = await const SecureStorage().readValue(key: kAccessToken);
     final Map<String, String> headers = {"Authorization": "Bearer $token"};
-    print('token: $headers');
+    debugPrint('token: $headers');
 
     final response = await client.post(
       Uri.parse("$kBaseUrl/auth/logout"),
@@ -119,7 +119,7 @@ class UserDataSourceWithHttp implements UserDataSource {
 
     if (response.statusCode == 201) {
       await const SecureStorage().deleteAllValues();
-      print("LOGGED OUT SUCCESSFULLY");
+      debugPrint("LOGGED OUT SUCCESSFULLY");
 
       return Future.value(kSuccess);
     } else if (response.statusCode == 401) {

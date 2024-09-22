@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/consts/app_colors.dart';
 
-enum TaskProgressEnum {
+enum TodoStatusEnum {
+  all(
+      name: "All",
+      backgroundColor: AppColors.secondary,
+      foregroundColor: AppColors.primary),
   inProgress(
       name: "InProgress",
       backgroundColor: AppColors.inProgressBg,
@@ -20,7 +24,7 @@ enum TaskProgressEnum {
   final Color backgroundColor;
   final Color foregroundColor;
 
-  const TaskProgressEnum({
+  const TodoStatusEnum({
     required this.name,
     required this.backgroundColor,
     required this.foregroundColor,

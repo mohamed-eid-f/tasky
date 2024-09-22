@@ -12,6 +12,7 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    context.read<AuthBloc>().add(RefreshTokenEvent());
     context.read<AuthBloc>().add(GetProfileEvent());
     return Scaffold(
       body: SafeArea(
@@ -20,7 +21,9 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 16),
-              const CustomAppbar(title: "Profile"),
+              const CustomAppbar(
+                title: "Profile",
+              ),
               const SizedBox(height: 24),
               Expanded(
                 child: SingleChildScrollView(

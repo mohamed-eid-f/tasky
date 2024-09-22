@@ -1,22 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:tasky/features/task/presentation/pages/add_new_task_screen.dart';
 import 'package:tasky/features/task/presentation/widgets/choose_priority_widget.dart';
 
 import '../../../../core/consts/consts.dart';
 import '../../../auth/presentation/widgets/app_large_title.dart';
-import '../../domain/enum/task_priority_enum.dart';
+import '../../domain/enum/todo_priority_enum.dart';
 
 class CustomPrioritySelector extends StatefulWidget {
-  const CustomPrioritySelector({super.key});
-
+  const CustomPrioritySelector({this.priority, super.key});
+  final String? priority;
   @override
   State<CustomPrioritySelector> createState() => _CustomPrioritySelectorState();
 }
 
 class _CustomPrioritySelectorState extends State<CustomPrioritySelector> {
-  TaskPriorityEnum _selectedTaskPriority = TaskPriorityEnum.medium;
+  TodoPriorityEnum selectedTodoPriority = TodoPriorityEnum.low;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.priority != null) {
+      switch (widget.priority!.toLowerCase()) {
+        case 'medium':
+          selectedTodoPriority = TodoPriorityEnum.medium;
+          break;
+
+        case 'high':
+          selectedTodoPriority = TodoPriorityEnum.high;
+          break;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    Dialog errorDialog = Dialog(
+    Dialog selectDialog = Dialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kBorderRadius)), //this right here
       child: Padding(
@@ -24,7 +42,7 @@ class _CustomPrioritySelectorState extends State<CustomPrioritySelector> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const AppLargeTitle(title: "Select Task Priority"),
+            const AppLargeTitle(title: "Select Todo Priority"),
             const SizedBox(height: 24),
             SizedBox(
               width: MediaQuery.of(context).size.width - 100,
@@ -34,17 +52,20 @@ class _CustomPrioritySelectorState extends State<CustomPrioritySelector> {
                 itemBuilder: (context, index) => InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
+                    TodoPriorityEnum selectedPriority =
+                        TodoPriorityEnum.values[index];
                     setState(() {
-                      _selectedTaskPriority = TaskPriorityEnum.values[index];
+                      selectedTodoPriority = selectedPriority;
+                      todoPriority = selectedPriority.name.toLowerCase();
                     });
                   },
                   child: ChoosePriorityWidget(
-                    priority: TaskPriorityEnum.values[index],
+                    priority: TodoPriorityEnum.values[index],
                     isSelectable: true,
                   ),
                 ),
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemCount: TaskPriorityEnum.values.length,
+                itemCount: TodoPriorityEnum.values.length,
               ),
             ),
           ],
@@ -54,10 +75,10 @@ class _CustomPrioritySelectorState extends State<CustomPrioritySelector> {
     return InkWell(
       onTap: () {
         showDialog(
-            context: context, builder: (BuildContext context) => errorDialog);
+            context: context, builder: (BuildContext context) => selectDialog);
       },
       child: ChoosePriorityWidget(
-        priority: _selectedTaskPriority,
+        priority: selectedTodoPriority,
       ),
     );
   }

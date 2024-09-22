@@ -20,6 +20,15 @@ class UserModel extends AppUser {
         address: json['address'],
         level: json['level'],
       );
+  factory UserModel.fromEntity(AppUser user) => UserModel(
+        id: user.id,
+        phone: user.phone,
+        password: user.password,
+        displayName: user.displayName,
+        experienceYears: user.experienceYears,
+        address: user.address,
+        level: user.level,
+      );
 
   Map<String, dynamic> toJson() => {
         'id': id,

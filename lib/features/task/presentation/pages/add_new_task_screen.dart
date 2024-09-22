@@ -1,58 +1,85 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:tasky/core/presentation/widgets/app_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasky/features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:tasky/features/task/presentation/bloc/todos/todos_bloc.dart';
+import 'package:tasky/features/task/presentation/widgets/add_new_task_widget.dart';
 
-import '../../../auth/presentation/widgets/app_small_title.dart';
-import '../../../auth/presentation/widgets/custom_text_field_hint.dart';
-import '../widgets/add_img_button.dart';
 import '../../../../core/presentation/widgets/custom_add_new_appbar.dart';
-import '../widgets/custom_date_selector.dart';
-import '../widgets/custom_priority_selector.dart';
+import '../../../../core/utils/show_dialog.dart';
+import 'home_screen.dart';
 
-class AddNewTaskScreen extends StatelessWidget {
+String? todoImg;
+String todoDueDate = "";
+String todoPriority = "low";
+
+class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({super.key});
+
+  @override
+  State<AddNewTaskScreen> createState() => _AddNewTaskScreenState();
+}
+
+class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+  late TextEditingController dueDateController;
+  late TextEditingController priorityController;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+    dueDateController = TextEditingController();
+    priorityController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    dueDateController.dispose();
+    priorityController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              SizedBox(height: 16),
-              CustomAppbar(title: "Add New Task"),
+              const SizedBox(height: 16),
+              const CustomAppbar(title: "Add New Task"),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 16),
-                      AddImgButton(),
-                      SizedBox(height: 16),
-                      AppSmallTitle(title: "Task title"),
-                      SizedBox(height: 16),
-                      CustomTextFieldHint(
-                        hint: "Enter Title here...",
-                      ),
-                      SizedBox(height: 16),
-                      AppSmallTitle(title: "Task Description"),
-                      SizedBox(height: 16),
-                      CustomTextFieldHint(
-                        hint: "Enter Description here...",
-                        lines: 6,
-                      ),
-                      SizedBox(height: 16),
-                      AppSmallTitle(title: "Priority"),
-                      SizedBox(height: 16),
-                      CustomPrioritySelector(),
-                      SizedBox(height: 16),
-                      AppSmallTitle(title: "Due Date"),
-                      SizedBox(height: 16),
-                      CustomDatePicker(
-                        titleText: "choose due date...",
-                      ),
-                      SizedBox(height: 24),
-                      AppButton(title: "Add task"),
-                      SizedBox(height: 24),
-                    ],
+                  child: BlocListener<TodosBloc, TodosState>(
+                    listener: (context, state) {
+                      if (state is TodoSuccessState) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const HomeScreen()));
+                      } else if (state is TodoFailureState) {
+                        ShowDialog(context).showErrorDialog(
+                          message: state.message,
+                          onPressed: () {
+                            // context.read<AuthBloc>().add(RefreshTokenEvent());
+                            Navigator.pop(context);
+                          },
+                        );
+                      } else if (state is TodoLoadingState) {
+                        ShowDialog(context).showLoadingDialog();
+                      }
+                    },
+                    child: AddNewTaskWidget(
+                      titleController: titleController,
+                      descriptionController: descriptionController,
+                    ),
                   ),
                 ),
               ),

@@ -30,9 +30,6 @@ class CustomHomeAppbar extends StatelessWidget {
           IconButton(
             onPressed: () async {
               context.read<AuthBloc>().add(LogoutEvent());
-
-              // _logoutUsecase();
-              print("USER LOGGED OUT SUCCESSFULLY");
             },
             icon: const Icon(
               Icons.logout,

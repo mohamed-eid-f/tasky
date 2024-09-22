@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky/core/consts/app_colors.dart';
 import 'package:tasky/core/consts/consts.dart';
 import 'package:intl/intl.dart';
+import 'package:tasky/features/task/presentation/pages/add_new_task_screen.dart';
 
 class CustomDatePicker extends StatefulWidget {
   const CustomDatePicker({
@@ -30,7 +31,11 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           lastDate: DateTime(2050),
         ).then((DateTime? selected) {
           if (selected != null && selected != selectedDate) {
-            setState(() => selectedDate = selected);
+            setState(() {
+              selectedDate = selected;
+              // 2024-05-15
+              todoDueDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+            });
           }
         });
 

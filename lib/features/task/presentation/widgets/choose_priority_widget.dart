@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:tasky/core/consts/consts.dart';
-import 'package:tasky/features/task/domain/enum/task_priority_enum.dart';
+import 'package:tasky/features/task/domain/enum/todo_priority_enum.dart';
 
 class ChoosePriorityWidget extends StatelessWidget {
   const ChoosePriorityWidget({
@@ -10,7 +10,7 @@ class ChoosePriorityWidget extends StatelessWidget {
     this.isSelectable = false,
   });
 
-  final TaskPriorityEnum priority;
+  final TodoPriorityEnum priority;
   final bool isSelectable;
 
   @override

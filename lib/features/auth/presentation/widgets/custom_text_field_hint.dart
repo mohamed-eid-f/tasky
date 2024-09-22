@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomTextFieldHint extends StatefulWidget {
-  final String hint;
-  final TextEditingController? controller;
-  final TextInputType textInputType;
-  final int lines;
-
+class CustomTextFieldHint extends StatelessWidget {
   const CustomTextFieldHint({
     super.key,
     required this.hint,
@@ -13,22 +8,21 @@ class CustomTextFieldHint extends StatefulWidget {
     this.textInputType = TextInputType.text,
     this.lines = 1,
   });
+  final String hint;
+  final TextEditingController? controller;
+  final TextInputType textInputType;
+  final int lines;
 
-  @override
-  State<CustomTextFieldHint> createState() => _CustomTextFieldHintState();
-}
-
-class _CustomTextFieldHintState extends State<CustomTextFieldHint> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
-      keyboardType: widget.textInputType,
-      minLines: widget.lines,
-      maxLines: widget.lines,
+      controller: controller,
+      keyboardType: textInputType,
+      minLines: lines,
+      maxLines: lines,
       style: Theme.of(context).textTheme.displayLarge,
       decoration: InputDecoration(
-        hintText: widget.hint,
+        hintText: hint,
         hintStyle: Theme.of(context).textTheme.bodyLarge,
       ),
     );

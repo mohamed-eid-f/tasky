@@ -6,6 +6,7 @@ import 'package:tasky/core/consts/consts.dart';
 
 class PhoneTextField extends StatelessWidget {
   final FocusNode? focusNode;
+  final String? initialValue;
   final Function(PhoneNumber)? onChanged;
   final Function(Country)? onCountryChanged;
   final void Function(PhoneNumber?)? onSaved;
@@ -13,6 +14,7 @@ class PhoneTextField extends StatelessWidget {
   const PhoneTextField({
     super.key,
     this.focusNode,
+    this.initialValue,
     this.onChanged,
     this.onCountryChanged,
     this.onSaved,
@@ -21,6 +23,8 @@ class PhoneTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntlPhoneField(
+      initialCountryCode: "EG",
+      initialValue: initialValue,
       validator: (value) {
         if (value == null) {
           return 'Please enter a valid phone number';

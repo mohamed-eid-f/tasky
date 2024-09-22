@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:tasky/core/consts/consts.dart';
 
-import '../../domain/enum/task_progress_enum.dart';
+import '../../domain/enum/todo_status_enum.dart';
 
-class ChooseProgressWidget extends StatelessWidget {
-  const ChooseProgressWidget({
+class ChooseStatusWidget extends StatelessWidget {
+  const ChooseStatusWidget({
     super.key,
-    required this.progress,
+    required this.status,
     this.isSelectable = false,
   });
 
-  final TaskProgressEnum progress;
+  final TodoStatusEnum status;
   final bool isSelectable;
 
   @override
@@ -20,7 +20,7 @@ class ChooseProgressWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: 50,
       decoration: BoxDecoration(
-        color: progress.backgroundColor,
+        color: status.backgroundColor,
         borderRadius: const BorderRadius.all(Radius.circular(kBorderRadius)),
       ),
       padding: const EdgeInsetsDirectional.symmetric(
@@ -31,16 +31,16 @@ class ChooseProgressWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            progress.name,
+            status.name,
             style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                  color: progress.foregroundColor,
+                  color: status.foregroundColor,
                 ),
           ),
           const Spacer(),
           if (!isSelectable)
             Icon(
               IconlyBold.arrow_down_2,
-              color: progress.foregroundColor,
+              color: status.foregroundColor,
             ),
         ],
       ),

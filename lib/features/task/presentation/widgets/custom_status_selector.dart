@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/core/consts/consts.dart';
 import 'package:tasky/features/auth/presentation/widgets/app_large_title.dart';
-import '../../domain/enum/task_progress_enum.dart';
-import 'choose_progress_widget.dart';
+import '../../domain/enum/todo_status_enum.dart';
+import 'choose_status_widget.dart';
 
-class CustomProgressSelector extends StatefulWidget {
-  const CustomProgressSelector({super.key});
+class CustomStatusSelector extends StatefulWidget {
+  const CustomStatusSelector(this.status, {super.key});
+  final String status;
 
   @override
-  State<CustomProgressSelector> createState() => _CustomProgressSelectorState();
+  State<CustomStatusSelector> createState() => _CustomStatusSelectorState();
 }
 
-class _CustomProgressSelectorState extends State<CustomProgressSelector> {
-  TaskProgressEnum _selectedTaskProgress = TaskProgressEnum.waiting;
+class _CustomStatusSelectorState extends State<CustomStatusSelector> {
+  TodoStatusEnum _selectedTodoStatus = TodoStatusEnum.waiting;
 
   @override
   Widget build(BuildContext context) {
+    switch (widget.status) {
+      case 'inProgress':
+        _selectedTodoStatus = TodoStatusEnum.inProgress;
+        break;
+      case 'finished':
+        _selectedTodoStatus = TodoStatusEnum.finished;
+        break;
+    }
     Dialog errorDialog = Dialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(kBorderRadius)), //this right here
@@ -24,7 +33,7 @@ class _CustomProgressSelectorState extends State<CustomProgressSelector> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const AppLargeTitle(title: "Select Task Progress"),
+            const AppLargeTitle(title: "Select Todo Status"),
             const SizedBox(height: 24),
             SizedBox(
               width: MediaQuery.of(context).size.width - 100,
@@ -34,16 +43,16 @@ class _CustomProgressSelectorState extends State<CustomProgressSelector> {
                   onTap: () {
                     Navigator.of(context).pop();
                     setState(() {
-                      _selectedTaskProgress = TaskProgressEnum.values[index];
+                      _selectedTodoStatus = TodoStatusEnum.values[index];
                     });
                   },
-                  child: ChooseProgressWidget(
-                    progress: TaskProgressEnum.values[index],
+                  child: ChooseStatusWidget(
+                    status: TodoStatusEnum.values[index],
                     isSelectable: true,
                   ),
                 ),
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemCount: TaskProgressEnum.values.length,
+                itemCount: TodoStatusEnum.values.length,
               ),
             ),
           ],
@@ -55,8 +64,8 @@ class _CustomProgressSelectorState extends State<CustomProgressSelector> {
         showDialog(
             context: context, builder: (BuildContext context) => errorDialog);
       },
-      child: ChooseProgressWidget(
-        progress: _selectedTaskProgress,
+      child: ChooseStatusWidget(
+        status: _selectedTodoStatus,
       ),
     );
   }

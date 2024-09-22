@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tasky/features/task/domain/enum/task_progress_enum.dart';
+import 'package:tasky/features/task/domain/enum/todo_status_enum.dart';
 
 import '../../../../core/consts/app_colors.dart';
 
@@ -11,19 +11,19 @@ class ChipsSelector extends StatefulWidget {
 }
 
 class _ChipsSelectorState extends State<ChipsSelector> {
-  TaskProgressEnum? _value = TaskProgressEnum.values[0];
+  TodoStatusEnum? _value = TodoStatusEnum.values[0];
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: TaskProgressEnum.values.length,
+        itemCount: TodoStatusEnum.values.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          final taskType = TaskProgressEnum.values[index];
-          bool selected = _value == taskType;
+          final todoType = TodoStatusEnum.values[index];
+          bool selected = _value == todoType;
           return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2),
               child: ChoiceChip(
-                label: Text(taskType.name),
+                label: Text(todoType.name),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 selected: selected,
@@ -38,7 +38,7 @@ class _ChipsSelectorState extends State<ChipsSelector> {
                       ),
                 onSelected: (selected) {
                   setState(() {
-                    _value = selected ? taskType : null;
+                    _value = selected ? todoType : null;
                   });
                 },
               ));

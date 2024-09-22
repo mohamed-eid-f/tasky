@@ -7,8 +7,6 @@ import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/network/internet_info.dart';
 
-// typedef CrudFunction = Future<String> Function();
-
 class UserRepoImpl implements UserRepo {
   final UserDataSource userDataSource;
   final InternetInfo internetInfo;
@@ -20,17 +18,9 @@ class UserRepoImpl implements UserRepo {
 
   @override
   Future<Either<Failure, String>> registerUser(AppUser user) async {
-    final userModel = AppUser(
-      phone: user.phone,
-      password: user.password,
-      displayName: user.displayName,
-      experienceYears: user.experienceYears,
-      address: user.address,
-      level: user.level,
-    );
     if (await internetInfo.isConnected) {
       try {
-        String result = await userDataSource.registerUser(userModel);
+        String result = await userDataSource.registerUser(user);
         return Right(result);
       } on ServerException {
         return Left(ServerFailure());

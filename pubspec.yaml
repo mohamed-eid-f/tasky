@@ -28,6 +28,8 @@ dependencies:
   image_picker: ^1.1.2
   get_it: ^7.7.0
   flutter_services_binding: ^0.1.0
+  http_parser: ^4.0.2
+  bloc_concurrency: ^0.2.5
 
 dev_dependencies:
   flutter_test:

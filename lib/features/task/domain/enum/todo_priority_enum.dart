@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/consts/app_colors.dart';
 
-enum TaskPriorityEnum {
+enum TodoPriorityEnum {
   high(
     name: "High",
     color: AppColors.highPriority,
@@ -23,7 +23,7 @@ enum TaskPriorityEnum {
   final Color color;
   final Color bgColor;
 
-  const TaskPriorityEnum({
+  const TodoPriorityEnum({
     required this.name,
     required this.color,
     required this.bgColor,

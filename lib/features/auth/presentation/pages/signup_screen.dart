@@ -43,7 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 }
               },
               builder: (context, state) {
-                print("state: $state");
+                debugPrint("state: $state");
                 if (state is AuthLoadingState) {
                   return const LoadingWidget();
                 } else if (state is AuthErrorState) {

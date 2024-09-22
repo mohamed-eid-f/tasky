@@ -5,12 +5,14 @@ import '../../../../core/consts/consts.dart';
 
 class AppPasswordField extends StatefulWidget {
   final String label;
+  final String? initialValue;
   final void Function(String?)? onSaved;
 
   const AppPasswordField({
     super.key,
     required this.label,
     this.onSaved,
+    this.initialValue,
   });
 
   @override
@@ -29,6 +31,7 @@ class _AppPasswordFieldState extends State<AppPasswordField> {
         }
         return null;
       },
+      initialValue: widget.initialValue,
       onSaved: widget.onSaved,
       obscureText: !visible,
       style: Theme.of(context).textTheme.bodyLarge,

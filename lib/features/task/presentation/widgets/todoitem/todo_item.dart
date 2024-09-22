@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:tasky/features/task/presentation/pages/task_details_screen.dart';
-import 'package:tasky/features/task/presentation/widgets/taskitem/taskitem_priority_widget.dart';
+import 'package:tasky/features/task/presentation/widgets/todoitem/todoitem_priority_widget.dart';
 
-import '../../../domain/enum/task_priority_enum.dart';
-import '../../../domain/enum/task_progress_enum.dart';
-import 'taskitem_progress_widget.dart';
+import '../../../../../core/consts/consts.dart';
+import '../../../domain/entity/todo.dart';
+import 'todoitem_progress_widget.dart';
 
-class TaskItem extends StatelessWidget {
-  const TaskItem({
+class TodoItem extends StatelessWidget {
+  const TodoItem({
     super.key,
+    required this.todo,
   });
+  final Todo todo;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const TaskDetailsScreen(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (_) => TaskDetailsScreen(todoId: todo.id!),
+        //   ),
+        // );
       },
       child: Container(
         height: 120.0,
@@ -29,11 +31,13 @@ class TaskItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 40.0,
-              backgroundImage: AssetImage(
-                'assets/images/list_image.png',
-              ),
+              backgroundImage: todo.image != null
+                  ? NetworkImage(
+                      "$kImagesUrl/${todo.image!}",
+                    )
+                  : const AssetImage(kDefaultImage),
             ),
             Expanded(
               child: Column(
@@ -43,28 +47,29 @@ class TaskItem extends StatelessWidget {
                       SizedBox(
                         width: 150,
                         child: Text(
-                          "Grocery Shopping App",
+                          todo.title ?? "No Title",
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.displaySmall,
                         ),
                       ),
                       const Spacer(),
-                      const TaskProgressWidget(
-                          taskProgressEnum: TaskProgressEnum.finished),
+                      TodoStatusWidget(status: todo.status ?? "waiting"),
                     ],
                   ),
-                  const Text(
-                    "This application is designed for super shops. By using",
+                  Text(
+                    todo.desc ?? "No Description",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      TaskPriorityWidget(
-                        priority: TaskPriorityEnum.low,
+                      TodoPriorityWidget(
+                        priority: todo.priority ?? "low",
                       ),
-                      Spacer(),
-                      Text("30/12/2022"),
+                      const Spacer(),
+                      Text(
+                        todo.dueDate ?? "No Date",
+                      ),
                     ],
                   ),
                 ],
