@@ -1,7 +1,7 @@
 import '../entity/todo.dart';
 
 abstract class TodoRepo {
-  Future<List<Todo>> getAllTodos(int page);
+  Future<List<Todo>> getAllTodos(int page, String status);
   Future<Todo> getOneTodo(String todoId);
   Future<Todo> createTodo(Todo todo, String imgPath);
   Future<Todo> editTodo(Todo todo);

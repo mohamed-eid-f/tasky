@@ -27,9 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => di.sl<AuthBloc>()),
         BlocProvider(create: (context) => di.sl<TodosBloc>()),
-        BlocProvider(
-            create: (context) =>
-                di.sl<AllTodosBloc>()..add(GetAllTodosEvent())),
+        BlocProvider(create: (context) => di.sl<AllTodosBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

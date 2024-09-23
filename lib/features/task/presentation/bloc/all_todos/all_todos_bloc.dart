@@ -8,6 +8,8 @@ import '../../../domain/entity/todo.dart';
 part 'all_todos_event.dart';
 part 'all_todos_state.dart';
 
+String stat = "";
+
 class AllTodosBloc extends Bloc<AllTodosEvent, GetAllTodosState> {
   final GetAllTodosUsecase getAllTodosUsecase;
 
@@ -15,14 +17,18 @@ class AllTodosBloc extends Bloc<AllTodosEvent, GetAllTodosState> {
     required this.getAllTodosUsecase,
   }) : super(const GetAllTodosState()) {
     on<AllTodosEvent>((event, emit) async {
+      print("stat: $stat");
       if (event is GetAllTodosEvent) {
-        if (state.hasReachedMax) return;
+        if (state.hasReachedMax && stat == event.status) return;
         try {
           if (state.status == GetAllTodoStatus.loading) {
-            final todos = await getAllTodosUsecase();
-            return todos.length < 20
+            stat = event.status;
+            final todos =
+                await getAllTodosUsecase(page: 1, status: event.status);
+            return todos.length != 20
                 ? emit(state.copyWith(
                     status: GetAllTodoStatus.success,
+                    todos: todos,
                     hasReachedMax: true,
                   ))
                 : emit(state.copyWith(
@@ -31,19 +37,42 @@ class AllTodosBloc extends Bloc<AllTodosEvent, GetAllTodosState> {
                     hasReachedMax: false,
                   ));
           } else {
-            int page = (state.todos.length ~/ 20) + 1;
-            final todos = await getAllTodosUsecase(page);
-            todos.length < 20
-                ? emit(state.copyWith(
-                    status: GetAllTodoStatus.success,
-                    todos: List.of(state.todos)..addAll(todos),
-                    hasReachedMax: true,
-                  ))
-                : emit(state.copyWith(
-                    status: GetAllTodoStatus.success,
-                    todos: List.of(state.todos)..addAll(todos),
-                    hasReachedMax: false,
-                  ));
+            int page = 1;
+            if (stat == event.status) {
+              page = (state.todos.length ~/ 20) + 1;
+            }
+            stat = event.status;
+            final todos =
+                await getAllTodosUsecase(page: page, status: event.status);
+            if (page == 1) {
+              if (todos.length != 20) {
+                emit(state.copyWith(
+                  status: GetAllTodoStatus.success,
+                  todos: todos,
+                  hasReachedMax: true,
+                ));
+              } else {
+                emit(state.copyWith(
+                  status: GetAllTodoStatus.success,
+                  todos: todos,
+                  hasReachedMax: false,
+                ));
+              }
+            } else {
+              if (todos.length != 20) {
+                emit(state.copyWith(
+                  status: GetAllTodoStatus.success,
+                  todos: List.of(state.todos)..addAll(todos),
+                  hasReachedMax: true,
+                ));
+              } else {
+                emit(state.copyWith(
+                  status: GetAllTodoStatus.success,
+                  todos: List.of(state.todos)..addAll(todos),
+                  hasReachedMax: false,
+                ));
+              }
+            }
           }
         } catch (e) {
           emit(
@@ -54,6 +83,6 @@ class AllTodosBloc extends Bloc<AllTodosEvent, GetAllTodosState> {
           );
         }
       }
-    }, transformer: droppable());
+    }, transformer: restartable());
   }
 }

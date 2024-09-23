@@ -7,4 +7,10 @@ sealed class AllTodosEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetAllTodosEvent extends AllTodosEvent {}
+class GetAllTodosEvent extends AllTodosEvent {
+  final String status;
+
+  const GetAllTodosEvent(this.status);
+  @override
+  List<Object> get props => [status];
+}

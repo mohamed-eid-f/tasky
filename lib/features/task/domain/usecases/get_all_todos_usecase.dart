@@ -7,7 +7,7 @@ class GetAllTodosUsecase {
     required this.repository,
   });
 
-  Future<List<Todo>> call([int page = 1]) async {
-    return await repository.getAllTodos(page);
+  Future<List<Todo>> call({int page = 1, String status = "all"}) async {
+    return await repository.getAllTodos(page, status);
   }
 }

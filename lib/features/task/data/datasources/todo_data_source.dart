@@ -13,7 +13,7 @@ import '../../../../core/errors/exceptions.dart';
 import '../models/todo_model.dart';
 
 abstract class TodoDataSource {
-  Future<List<Todo>> getTodos(int page);
+  Future<List<Todo>> getTodos(int page, String status);
   Future<String> uploadImage(File todoImg);
   Future<Todo> createTodo(Todo todo);
   Future<Todo> getTodo(String todoId);
@@ -126,8 +126,12 @@ class TodoDataSourceWithHttp implements TodoDataSource {
   }
 
   @override
-  Future<List<Todo>> getTodos(page) async {
+  Future<List<Todo>> getTodos(page, status) async {
     String url = "$kBaseUrl/todos?page=$page";
+    if (status != "all") {
+      url += "&status=$status";
+    }
+    print(url);
     final token = await const SecureStorage().readValue(key: kAccessToken);
 
     final Map<String, String> headers = {"Authorization": "Bearer $token"};

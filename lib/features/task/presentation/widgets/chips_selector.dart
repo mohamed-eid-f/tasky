@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/features/task/domain/enum/todo_status_enum.dart';
 
 import '../../../../core/consts/app_colors.dart';
+import '../bloc/all_todos/all_todos_bloc.dart';
 
 class ChipsSelector extends StatefulWidget {
   const ChipsSelector({super.key});
@@ -11,9 +13,18 @@ class ChipsSelector extends StatefulWidget {
 }
 
 class _ChipsSelectorState extends State<ChipsSelector> {
-  TodoStatusEnum? _value = TodoStatusEnum.values[0];
+  TodoStatusEnum _value = TodoStatusEnum.values[0];
   @override
   Widget build(BuildContext context) {
+    if (_value == TodoStatusEnum.inProgress) {
+      context.read<AllTodosBloc>().add(const GetAllTodosEvent("inProgress"));
+    } else if (_value == TodoStatusEnum.waiting) {
+      context.read<AllTodosBloc>().add(const GetAllTodosEvent("waiting"));
+    } else if (_value == TodoStatusEnum.finished) {
+      context.read<AllTodosBloc>().add(const GetAllTodosEvent("finished"));
+    } else {
+      context.read<AllTodosBloc>().add(const GetAllTodosEvent("all"));
+    }
     return ListView.builder(
         itemCount: TodoStatusEnum.values.length,
         scrollDirection: Axis.horizontal,
@@ -37,9 +48,10 @@ class _ChipsSelectorState extends State<ChipsSelector> {
                         fontWeight: FontWeight.bold,
                       ),
                 onSelected: (selected) {
-                  setState(() {
-                    _value = selected ? todoType : null;
-                  });
+                  if (selected && _value != todoType) {
+                    _value = todoType;
+                    setState(() {});
+                  }
                 },
               ));
         });

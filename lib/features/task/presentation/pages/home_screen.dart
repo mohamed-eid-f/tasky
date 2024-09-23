@@ -18,6 +18,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// String status = "all";
+
 class _HomeScreenState extends State<HomeScreen> {
   final _scrollController = ScrollController();
 
@@ -39,14 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
     if (currentScroll >= (maxScroll * 0.8)) {
-      context.read<AllTodosBloc>().add(GetAllTodosEvent());
+      context.read<AllTodosBloc>().add(GetAllTodosEvent(stat));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    context.read<AllTodosBloc>().add(GetAllTodosEvent());
-
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {

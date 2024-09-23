@@ -60,10 +60,10 @@ class TodoRepoImpl implements TodoRepo {
   }
 
   @override
-  Future<List<Todo>> getAllTodos(int page) async {
+  Future<List<Todo>> getAllTodos(int page, String status) async {
     if (await internetInfo.isConnected) {
       try {
-        final todos = await todoDataSource.getTodos(page);
+        final todos = await todoDataSource.getTodos(page, status);
         return todos;
       } catch (e) {
         rethrow;

@@ -8,17 +8,27 @@ class AppBlocObserver implements BlocObserver {
   }
 
   @override
-  void onClose(BlocBase bloc) {}
+  void onClose(BlocBase bloc) {
+    debugPrint('closed: $bloc');
+  }
 
   @override
-  void onCreate(BlocBase bloc) {}
+  void onCreate(BlocBase bloc) {
+    debugPrint('created: $bloc');
+  }
 
   @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {}
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    debugPrint('error: $bloc => $error - $stackTrace');
+  }
 
   @override
-  void onEvent(Bloc bloc, Object? event) {}
+  void onEvent(Bloc bloc, Object? event) {
+    debugPrint('event: $bloc => $event');
+  }
 
   @override
-  void onTransition(Bloc bloc, Transition transition) {}
+  void onTransition(Bloc bloc, Transition transition) {
+    debugPrint('transition: $bloc => $transition');
+  }
 }
